@@ -93,7 +93,8 @@ client.on('message', async (msg) => {
 		// Checking if we have exactly one argument
 		if (command.length == 1) {
 			numberOfLogs = parseInt(command[0]);
-			console.log(numberOfLogs);
+			if (numberOfLogs < 1) {
+			}
 		}
 		// Replying with an error message and preventing a DDB query to be executed
 		else if (command.length > 1) {
@@ -143,7 +144,11 @@ client.on('message', async (msg) => {
 					// Actual logs to be showed.
 					// We still need to query the others to calculate the log streak
 					const newLog = logHistory.slice(
-						Math.max(logHistory.length - numberOfLogs, 0)
+						Math.max(
+							logHistory.length -
+								Math.max(logHistory.length, numberOfLogs),
+							0
+						)
 					);
 
 					// Gets the current streak of consecutive days with a log
@@ -175,14 +180,14 @@ client.on('message', async (msg) => {
 						.setDescription(
 							`Showing ${Math.min(
 								numberOfLogs,
-								data.Items.length
-							)} out of ${data.Items.length} logged days`
+								logHistory.length
+							)} out of ${logHistory.length} logged days`
 						)
 						.addFields(
 							...newLog,
 							{
 								name: 'Days completed',
-								value: data.Items.length,
+								value: logHistory.length,
 								inline: true,
 							},
 							{
