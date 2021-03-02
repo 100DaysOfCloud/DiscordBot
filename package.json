@@ -1,22 +1,28 @@
 {
 	"name": "discord-bot",
-	"version": "1.0.0",
-	"description": "",
+	"version": "0.0.1",
+	"description": "The official #100DaysOfCloud Discord Bot. Track your progress, share your statistics and cheer other people!",
 	"main": "index.js",
 	"scripts": {
-		"start": "nodemon index.js"
+		"start": "node index.js",
+		"dev": "nodemon index.js"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": [
+		"discord",
+		"javascript"
+	],
+	"author": "Antonio Lo Fiego <alofiego@hey.com>",
+	"license": "MIT",
 	"dependencies": {
 		"aws-sdk": "^2.854.0",
 		"discord.js": "^12.5.1",
-		"dotenv": "^8.2.0",
-		"uuid": "^8.3.2"
+		"dotenv": "^8.2.0"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.7"
+	},
+	"engines": {
+		"node": ">=12.13.0"
 	},
 	"type": "module"
 }
