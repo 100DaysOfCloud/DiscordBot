@@ -93,12 +93,17 @@ client.on('message', async (msg) => {
 		// Checking if we have exactly one argument
 		if (command.length == 1) {
 			numberOfLogs = parseInt(command[0]);
-			if (numberOfLogs < 1) {
-			}
 		}
 		// Replying with an error message and preventing a DDB query to be executed
 		else if (command.length > 1) {
 			msg.reply('I received more arguments that I can handle!');
+			return;
+		}
+
+		if (numberOfLogs < 0) {
+			msg.reply(
+				'Please, enter either a positive number or 0 if you want to look at all your logs!'
+			);
 			return;
 		}
 
