@@ -83,6 +83,25 @@ client.on('message', async (msg) => {
 
 	if (msg.content.startsWith('$getlogs')) {
 		// DDB query parameters to check for all the logs from the current user
+
+		// $getlogs only accepts 1 additional argument, the number of logs to show
+		const command = msg.content.split(' ').slice(1);
+
+		// defaults to 10 if not provided
+		let numberOfLogs = 10;
+
+		// Checking if we have exactly one argument
+		if (command.length == 1) {
+			numberOfLogs = parseInt(command[0]);
+			console.log(numberOfLogs);
+		}
+		// Replying with an error message and preventing a DDB query to be executed
+		else if (command.length > 1) {
+			msg.reply('I received more arguments that I can handle!');
+			return;
+		}
+
+		// Query parameters for the DynamoDB put call
 		var params = {
 			ExpressionAttributeValues: {
 				':user_id': msg.author.id,
@@ -98,14 +117,18 @@ client.on('message', async (msg) => {
 		let logDates = [];
 
 		dbClient.query(params, function (err, data) {
+			// Reply something on error but logs the error.
 			if (err) {
 				console.log(err);
 				msg.reply('Something went wrong, sorry about that!');
+				return;
 			} else {
+				// When the query returns no items (user has not logged anything yet)
 				if (data.Items.length === 0) {
 					msg.reply(
 						"You don't have any logged message! Start today by typing `$logday`!"
 					);
+					return;
 				} else {
 					// Iterate over the returned objects, creating of log objects and an array of ordered dates
 					data.Items.forEach(function (element, index) {
@@ -116,6 +139,12 @@ client.on('message', async (msg) => {
 						logHistory = [...logHistory, logBody];
 						logDates = [...logDates, element.log_date];
 					});
+
+					// Actual logs to be showed.
+					// We still need to query the others to calculate the log streak
+					const newLog = logHistory.slice(
+						Math.max(logHistory.length - numberOfLogs, 0)
+					);
 
 					// Gets the current streak of consecutive days with a log
 					function currentStreak(arr) {
@@ -143,8 +172,14 @@ client.on('message', async (msg) => {
 						.setColor('#0099ff')
 						.setThumbnail(msg.author.avatarURL())
 						.setTitle(`${msg.author.username} log report`)
+						.setDescription(
+							`Showing ${Math.min(
+								numberOfLogs,
+								data.Items.length
+							)} out of ${data.Items.length} logged days`
+						)
 						.addFields(
-							...logHistory,
+							...newLog,
 							{
 								name: 'Days completed',
 								value: data.Items.length,
@@ -160,6 +195,7 @@ client.on('message', async (msg) => {
 						.setFooter('Add a new log with `$logday`');
 
 					msg.reply(msgReply);
+					return;
 				}
 			}
 		});
