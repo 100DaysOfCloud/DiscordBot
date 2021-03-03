@@ -4,12 +4,12 @@
 	"description": "The official #100DaysOfCloud Discord Bot. Track your progress, share your statistics and cheer other people!",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
+		"start": "tsc index.ts && node index.js",
 		"dev": "concurrently --kill-others \"tsc -w -project tsconfig.json\" \"nodemon index.js\""
 	},
 	"keywords": [
 		"discord",
-		"javascript"
+		"typescript"
 	],
 	"author": "Antonio Lo Fiego <alofiego@hey.com>",
 	"license": "MIT",
