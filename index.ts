@@ -34,14 +34,6 @@ type DDBQueryParams = {
 	KeyConditionExpression: string;
 };
 
-type LogBody = {
-	name?: string;
-	value?: string;
-	title: string;
-	message: string;
-	inline: boolean;
-};
-
 // Register an event so that when the bot is ready, it will log a messsage to the terminal
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user?.tag}!`);
@@ -147,7 +139,7 @@ client.on('message', async (msg: Message) => {
 		};
 
 		// Initialize empty user body
-		let logHistory: LogBody[] = [];
+		let logHistory: EmbedFieldData[] = [];
 
 		// Initialize empty date array for streak calculations
 		let logDates: string[] = [];
@@ -173,7 +165,7 @@ client.on('message', async (msg: Message) => {
 							value: String(element.message),
 							inline: false,
 						};
-						logHistory = [...logHistory, logBody] as LogBody[];
+						logHistory = [...logHistory, logBody];
 						logDates = [...logDates, element.log_date];
 					});
 
@@ -220,7 +212,7 @@ client.on('message', async (msg: Message) => {
 							)} out of ${logHistory.length} logged days`
 						)
 						.addFields(
-							...(newLog as EmbedFieldData[]),
+							...newLog,
 							{
 								name: 'Days completed',
 								value: logHistory.length,
