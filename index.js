@@ -92,7 +92,12 @@ client.on('message', async (msg) => {
 
 		// Checking if we have exactly one argument
 		if (command.length == 1) {
-			numberOfLogs = parseInt(command[0]);
+			numberOfLogs = Number(command[0]);
+			console.log(numberOfLogs);
+			if (isNaN(numberOfLogs)) {
+				msg.reply('Please input a number');
+				return;
+			}
 		}
 		// Replying with an error message and preventing a DDB query to be executed
 		else if (command.length > 1) {
@@ -151,7 +156,7 @@ client.on('message', async (msg) => {
 					const newLog = logHistory.slice(
 						Math.max(
 							logHistory.length -
-								Math.max(logHistory.length, numberOfLogs),
+								Math.min(logHistory.length, numberOfLogs),
 							0
 						)
 					);
