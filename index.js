@@ -41,6 +41,9 @@ client.on('message', async (msg) => {
 		// Instantiate empty payload to be filled on collection
 		let payload = {};
 
+		// Check if the message starts with '!hello' and respond with 'world!' if it does.
+		msg.reply('What do you want to log for today?');
+
 		collector.on('collect', (message) => {
 			const timestamp = new Date(message.createdAt);
 			payload = {
@@ -50,6 +53,7 @@ client.on('message', async (msg) => {
 			};
 		});
 
+		// When the collector is done, POST the the payload if the user_id/date combination is not already in DDB
 		collector.on('end', (_) => {
 			const params = {
 				TableName: process.env.DYNAMODB_TABLE_NAME,
@@ -66,19 +70,20 @@ client.on('message', async (msg) => {
 
 			dbClient.put(params, (error) => {
 				if (!error) {
-					// Finally, return a message to the user stating that the app was saved
-					console.log(payload);
-				} else {
-					console.log(error);
 					msg.reply(
-						"You already logged your progress today. You can't log more than once per day!"
+						`Success! Your log for ${payload.timestamp} has been logged!`
 					);
+				} else {
+					if (error.code === 'ConditionalCheckFailedException') {
+						msg.reply(
+							"You already logged your progress today. You can't log more than once per day!"
+						);
+					} else {
+						msg.reply('Something went wrong, please try again!');
+					}
 				}
 			});
 		});
-
-		// Check if the message starts with '!hello' and respond with 'world!' if it does.
-		msg.reply('What do you want to log for today?');
 	}
 
 	if (msg.content.startsWith('$getlogs')) {
