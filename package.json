@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
-		"dev": "concurrently --kill-others \"tsc -w\" \"nodemon index.js\""
+		"dev": "concurrently --kill-others \"tsc -w -project tsconfig.json\" \"nodemon index.js\""
 	},
 	"keywords": [
 		"discord",
