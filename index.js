@@ -26,7 +26,7 @@ client.on('ready', () => {
 client.on('message', async (msg) => {
 	// Handling daily logging messages
 	if (msg.content.startsWith('$logday')) {
-		// If the both is the message author, disregard
+		// If the bot is the message author, disregard
 		let filter = (msg) => !msg.author.bot;
 
 		// Accept only one answer in the next 15 seconds
