@@ -71,7 +71,7 @@ client.on('message', async (msg) => {
 			dbClient.put(params, (error) => {
 				if (!error) {
 					msg.reply(
-						`Success! Your log for ${payload.timestamp} has been logged!`
+						`Success! Your log for ${payload.timestamp} has been saved!`
 					);
 				} else {
 					if (error.code === 'ConditionalCheckFailedException') {
