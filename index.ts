@@ -49,7 +49,7 @@ client.on('message', async (msg: Message) => {
 		// Accept only one answer in the next 15 seconds
 		let options = {
 			max: 1,
-			time: 15000,
+			time: 30000,
 		};
 
 		// Create message collector to accept incoming chat messages
