@@ -4,8 +4,10 @@
 	"description": "The official #100DaysOfCloud Discord Bot. Track your progress, share your statistics and cheer other people!",
 	"main": "index.js",
 	"scripts": {
-		"start": "tsc index.ts && node index.js",
-		"dev": "concurrently --kill-others \"tsc -w -project tsconfig.json\" \"nodemon index.js\""
+		"start": "node index.js",
+		"dev": "concurrently --kill-others \"tsc -w -project tsconfig.json\" \"nodemon index.js\"",
+		"tsc": "tsc",
+		"postinstall": "npm run tsc"
 	},
 	"keywords": [
 		"discord",
