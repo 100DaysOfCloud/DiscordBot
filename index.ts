@@ -41,6 +41,40 @@ client.on('ready', () => {
 
 // Register an event to handle incoming messages
 client.on('message', async (msg: Message) => {
+	if (msg.content.startsWith('$help')) {
+		const reply = new MessageEmbed()
+			.setColor('#0099ff')
+			.setTitle(`#100DaysOfCloud Discord Bot help`)
+			.setDescription(
+				'Hey there! I am the official 100DaysOfCloud Discord bot!\n\nHere are a few commands that you can use!'
+			)
+			.addFields(
+				{
+					name: '$help',
+					value: 'Shows you this popup and the command list.',
+					inline: false,
+				},
+				{
+					name: '$logday',
+					value:
+						'Starts a conversation to log your day of progress. You can log only once a day!',
+					inline: false,
+				},
+				{
+					name: '$getlogs [number]',
+					value:
+						'Shows you your most recent logs. If you specify a number (eg: $getlogs x) it shows you your x most recent logs.',
+				}
+			)
+			.setTimestamp()
+			.setFooter(
+				'Want to see a new feature? Let us know in the #100-days-of-ideas channel!'
+			);
+
+		msg.reply(reply);
+		return;
+	}
+
 	// Handling daily logging messages
 	if (msg.content.startsWith('$logday')) {
 		// If the bot is the message author, disregard
