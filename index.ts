@@ -1,5 +1,5 @@
 import { Client, EmbedFieldData, Message, MessageEmbed } from 'discord.js';
-import * as AWS from 'aws-sdk';
+import AWS from 'aws-sdk';
 
 // Use .env variables
 import * as dotenv from 'dotenv';
