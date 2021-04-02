@@ -207,8 +207,7 @@ client.on('message', async (msg: Message) => {
 					// We still need to query the others to calculate the log streak
 					const newLog = logHistory.slice(
 						Math.max(
-							logHistory.length -
-								Math.min(logHistory.length, numberOfLogs),
+							logHistory.length - Math.min(logHistory.length, numberOfLogs),
 							0
 						)
 					);
@@ -240,10 +239,9 @@ client.on('message', async (msg: Message) => {
 						.setThumbnail(msg.author.avatarURL() as string)
 						.setTitle(`${msg.author.username} log report`)
 						.setDescription(
-							`Showing ${Math.min(
-								numberOfLogs,
+							`Showing ${Math.min(numberOfLogs, logHistory.length)} out of ${
 								logHistory.length
-							)} out of ${logHistory.length} logged days`
+							} logged days`
 						)
 						.addFields(
 							...newLog,
